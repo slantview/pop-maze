@@ -1,4 +1,13 @@
-import { randomBytes } from "crypto";
+/**
+ * Walls define the set of walls that each cell can have.
+ */
+ export enum Walls {
+	Top = 0x0001,
+	Right = 0x0010,
+	Bottom = 0x0100,
+	Left = 0x1000,
+	All = 0x1111
+};
 
 /**
  * Maze is the base class for creating a maze. 
@@ -83,7 +92,6 @@ export class Maze {
 
 		// Do a bounded loop. Once we have visited all cells, we can exit safely.
 		while (visited <= this.width * this.height) {
-			console.log(`Visiting cell #${current.index}`)
 			// Mark current cell as visited and increment our visited counter.
 			if (!current.visited) {
 				current.visited = true;
@@ -163,17 +171,6 @@ export class Maze {
 		}
 	}
 }
-
-/**
- * Walls define the set of walls that each cell can have.
- */
-export enum Walls {
-	Top = 0x0001,
-	Right = 0x0010,
-	Bottom = 0x0100,
-	Left = 0x1000,
-	All = 0x1111
-};
 
 export class Cell {
 	index: number;

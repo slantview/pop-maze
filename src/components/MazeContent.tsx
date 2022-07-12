@@ -1,6 +1,5 @@
-import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
-import Maze, { Walls } from '../lib/maze';
+import React from 'react';
+import Maze from '../lib/maze';
 import MazeCell from './MazeCell';
 
 interface MazeProps {
@@ -12,12 +11,12 @@ const MazeContent = (props: MazeProps) => {
     const height: number = maze.height * 3;
 
     return (
-        <div 
-            className={"bg-amber-500 mb-8 border-amber-800 border-4 grid grid-flow-row grid-cols-"+maze.width} 
-            style={{height: `${height}rem`, width: `${width}rem`}}
+        <div
+            className={"bg-amber-500 mb-8 border-amber-800 border-4 grid grid-flow-row grid-cols-" + maze.width}
+            style={{ height: `${height}rem`, width: `${width}rem` }}
         >
-            { maze.data.map((item, i) => (
-               <MazeCell item={item} />
+            {maze.data.map((item, i) => (
+                <MazeCell item={item} />
             ))}
         </div>
     );

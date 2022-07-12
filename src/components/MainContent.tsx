@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import MazeContent from './MazeContent';
-import island from '../assets/images/island-header.png';
 import Maze from '../lib/maze';
 
 const MainContent = () => {
@@ -12,6 +11,8 @@ const MainContent = () => {
       let active = true;
     
       if (active) {
+        setWidth(10);
+        setHeight(10);
         regenerate();
       }
 
