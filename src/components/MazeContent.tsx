@@ -12,7 +12,7 @@ const MazeContent = (props: MazeProps) => {
 
     return (
         <div
-            className={"bg-amber-500 mb-8 border-amber-800 border-4 grid grid-flow-row grid-cols-" + maze.width}
+            className={"bg-amber-500 mb-8 border-amber-800 border-4 grid grid-cols-10"}
             style={{ height: `${height}rem`, width: `${width}rem` }}
         >
             {maze.data.map((item, i) => (
