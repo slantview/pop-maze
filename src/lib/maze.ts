@@ -100,7 +100,6 @@ export class Maze {
 	 */
 	isLeftEdge(cell: Cell): boolean {
 		return (cell.index % this.width) === 0;
-		
 	}
 
 	/**
@@ -256,10 +255,39 @@ export class Maze {
 }
 
 export class Cell {
+	/**
+	 * The current index of the cell.
+	 * 
+	 * @type number
+	 */
 	index: number;
+
+	/**
+	 * The current walls of the cell. (See enum Walls)
+	 * 
+	 * @type number
+	 */
 	walls: number;
+
+	/**
+	 * Has the cell been visited yet.
+	 * 
+	 * @type boolean
+	 */
 	visited: boolean = false;
+
+	/**
+	 * Is this the starting cell.
+	 * 
+	 * @type boolean
+	 */
 	start: boolean = false;
+
+	/**
+	 * Is this the ending cell.
+	 * 
+	 * @type boolean
+	 */
 	end: boolean = false;
 
 	constructor(idx: number) {
