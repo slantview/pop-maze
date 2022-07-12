@@ -8,9 +8,14 @@ interface MazeProps {
 };
 const MazeContent = (props: MazeProps) => {
     const { maze } = props;
-    
+    const width: number = maze.width * 3;
+    const height: number = maze.height * 3;
+
     return (
-        <div className={"bg-amber-500 mb-8 border-amber-800 border-4 grid grid-cols-"+maze.width}>
+        <div 
+            className={"bg-amber-500 mb-8 border-amber-800 border-4 grid grid-flow-row grid-cols-"+maze.width} 
+            style={{height: `${height}rem`, width: `${width}rem`}}
+        >
             { maze.data.map((item, i) => (
                <MazeCell item={item} />
             ))}

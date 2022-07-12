@@ -16,12 +16,12 @@ const MazeCell = (props: CellProps) => {
             'border-r': ((item.walls & Walls.Right)),
             'border-b': ((item.walls & Walls.Bottom)),
             'border-l': ((item.walls & Walls.Left)),
-        }, 'border-amber-800 flex justify-center content-center p-1 w-8 h-8')}>
+        }, 'border-amber-800 flex justify-center content-center p-2')}>
             {item.end && 
-                <img src={chest} className="w-6 h-6" alt="end" />
+                <img src={chest} className="w-8 h-8" alt="end" />
             }
             {item.start && 
-                <img src={pirate} className="w-6 h-6 rounded-full border border-amber-800" alt="start" />
+                <img src={pirate} className="w-8 h-8 rounded-full border border-amber-800" alt="start" />
             }
             &nbsp;
         </div>

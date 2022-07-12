@@ -32,7 +32,12 @@ const MainContent = () => {
                     <MazeContent maze={maze} />
                     {/* <img src={island} className="w-40" alt="island" /> */}
                 </div>
-                <button onClick={regenerate} className='px-4 py-2 rounded-md shadow-md shadow-amber-900 text-white text-2xl bg-amber-600 hover:bg-amber-500 transition delay-75 hover:duration-150 active:duration-100 ease-in-out hover:-translate-y-1 active:translate-y-1'>Regenerate</button>
+                <button 
+                    onClick={regenerate} 
+                    className='px-4 py-2 rounded-md shadow-md shadow-amber-900 text-white text-2xl bg-amber-600 hover:bg-amber-500 transition delay-75 hover:duration-150 active:duration-100 ease-in-out hover:-translate-y-1 active:translate-y-1'
+                >
+                    Regenerate
+                </button>
             </div>
             
             
