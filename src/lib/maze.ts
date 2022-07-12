@@ -28,14 +28,14 @@ export class Maze {
 	data: Array<Cell>;
 
 	/** 
-	 * Data is used to keep a single dimensional array of all cells. Size is defined by width * height;
+	 * Width is the width of the maze.
 	 * 
 	 * @type number
 	 */
 	width: number;
 
 	/** 
-	 * Data is used to keep a single dimensional array of all cells. Size is defined by width * height;
+	 * Height is the height of the maze.
 	 * 
 	 * @type number
 	 */
@@ -62,6 +62,12 @@ export class Maze {
 		this.generate();
 	}
 
+	/**
+	 * isEdge checks to see if we are on an edge.
+	 * 
+	 * @param cell - The cell to check if it's on an edge.
+	 * @returns true if cell is on an edge, false otherwise.
+	 */
 	isEdge(cell: Cell): boolean {
 		return (
 			// Cell is in first row.
@@ -84,8 +90,9 @@ export class Maze {
 		let current: Cell = this.data[0];
 		// Set current to start.
 		current.start = true;
-		// Track furtest cell for end.
+		// Track furtest distance cell for end.
 		let distance: number = 0;
+		// The urrent end pointer.
 		let currentEnd: Cell = current;
 		// Track number of visited cells.
 		let visited: number = 1;
@@ -128,16 +135,18 @@ export class Maze {
 			// If neighbors is empty but we still have stack items, start to backtrack.
 			if (neighbors.length === 0) {
 				// If 
-				if (this.stack.length > distance && this.isEdge(current)) {
+				if (this.stack.length > distance && this.isEdge(current) && distance > 5) {
 					currentEnd.end = false
 					current.end = true;
 					currentEnd = current;
 				} 
 				const nextCell = this.stack.pop();
+
 				// If we are at the end of the stack, break the loop.
 				if (!nextCell) {
 					break;
 				}
+				// Set the current cell to next.
 				current = nextCell;
 			} else {
 				// First find the next cell via random selection.
@@ -200,7 +209,6 @@ export class Cell {
 	removeWall(target: number) {
 		this.walls &= ~target;
 	}
-
 }
 
 export default Maze;
