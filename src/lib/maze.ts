@@ -42,8 +42,9 @@ export class Maze {
 	height: number;
 
 	/**
+	 * currentEnd is the currently selected end cell.
 	 * 
-	 * @type Cell
+	 * @type Cell | undefined
 	 */
 	currentEnd: Cell | undefined = undefined;
 

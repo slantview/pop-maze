@@ -12,10 +12,10 @@ const MazeCell = (props: CellProps) => {
 
     return (
         <div className={clsx({
-            'border-t': ((item.walls & Walls.Top)),
-            'border-r': ((item.walls & Walls.Right)),
-            'border-b': ((item.walls & Walls.Bottom)),
-            'border-l': ((item.walls & Walls.Left)),
+            'border-t': ((item.walls & Walls.Top) !== 0),
+            'border-r': ((item.walls & Walls.Right) !== 0),
+            'border-b': ((item.walls & Walls.Bottom) !== 0),
+            'border-l': ((item.walls & Walls.Left) !== 0),
         }, 'border-amber-800 flex justify-center content-center p-2')}>
             {item.end && 
                 <img src={chest} className="w-8 h-8" alt="end" />
