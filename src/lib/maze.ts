@@ -42,6 +42,12 @@ export class Maze {
 	height: number;
 
 	/**
+	 * 
+	 * @type Cell
+	 */
+	currentEnd: Cell | undefined = undefined;
+
+	/**
 	 * Initialize the data cells as specified by width and height. 
 	 * 
 	 * @param width - The width of the maze.
@@ -53,13 +59,67 @@ export class Maze {
 		this.width = width;
 		this.height = height;
 
+		// Generate maze. If we don't get an end oppposite side from start, regenerate. Max out at 10.
+		for (let i = 0; i < 10; i++) {
+			this.reset();
+			this.generate();
+			// Sometimes it can't find an end on opposite side. We'll just regenerate if it's on the same side.
+			if (typeof this.currentEnd !== 'undefined') {
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Reset internal data structures.
+	 */
+	reset() {
 		// Initialize cells for the maze.
-		for (let i = 0; i < width * height; i++) {
+		for (let i = 0; i < this.width * this.height; i++) {
 			this.data.push(new Cell(i));
 		}
+		this.stack = [];
+	}
 
-		// Generate maze.
-		this.generate();
+	/**
+	 * Check if cell is on top edge.
+	 * 
+	 * @param cell - The cell to check.
+	 * @returns true if cell is on top edge, false otherwise.
+	 */
+	isTopEdge(cell: Cell): boolean {
+		return cell.index < this.width;
+	}
+
+	/**
+	 * Check if cell is on left edge.
+	 * 
+	 * @param cell - The cell to check.
+	 * @returns true if cell is on left edge, false otherwise.
+	 */
+	isLeftEdge(cell: Cell): boolean {
+		return (cell.index % this.width) === 0;
+		
+	}
+
+	/**
+	 * Check if cell is on right edge.
+	 * 
+	 * @param cell - The cell to check.
+	 * @returns true if cell is on right edge, false otherwise.
+	 */
+	isRightEdge(cell: Cell): boolean {
+		return (cell.index % this.width) === (this.width - 1);
+	}
+
+	/**
+	 * Check if cell is on bottom edge.
+	 * 
+	 * @param cell - The cell to check.
+	 * @returns true if cell is on bottom edge, false otherwise.
+	 */
+	isBottomEdge(cell: Cell): boolean {
+		return cell.index > ((this.width * this.height) - this.width) && cell.index < (this.width * this.height);
 	}
 
 	/**
@@ -68,17 +128,27 @@ export class Maze {
 	 * @param cell - The cell to check if it's on an edge.
 	 * @returns true if cell is on an edge, false otherwise.
 	 */
-	isEdge(cell: Cell): boolean {
+	 isEdge(cell: Cell): boolean {
 		return (
 			// Cell is in first row.
-			cell.index <= this.width ||
+			this.isTopEdge(cell) ||
 			// Cell is on left side.
-			cell.index % this.width === this.width - 1 || 
+			this.isLeftEdge(cell) || 
 			// Cell is on right side.
-			cell.index % this.width === 0 ||
+			this.isRightEdge(cell) ||
 			// Cell is in last row.
-			cell.index > ((this.width * this.height) - this.width) && cell.index < (this.width * this.height)
+			this.isBottomEdge(cell)
 		);
+	}
+
+	/**
+	 * Check if edge is able to be used as end.
+	 * 
+	 * @param cell - The cell to check.
+	 * @returns true if cell is on right or bottom edge, false otherwise.
+	 */
+	canPlaceEnd(cell: Cell): boolean {
+		return this.isRightEdge(cell) || this.isBottomEdge(cell);
 	}
 
 	/**
@@ -86,14 +156,13 @@ export class Maze {
 	 *  See https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_depth-first_search for more details.
 	 */
 	generate() {
+		console.log("Generating maze.")
 		// Set current to zero indexed cell.
 		let current: Cell = this.data[0];
 		// Set current to start.
 		current.start = true;
 		// Track furtest distance cell for end.
 		let distance: number = 0;
-		// The urrent end pointer.
-		let currentEnd: Cell = current;
 		// Track number of visited cells.
 		let visited: number = 1;
 
@@ -134,12 +203,16 @@ export class Maze {
 
 			// If neighbors is empty but we still have stack items, start to backtrack.
 			if (neighbors.length === 0) {
-				// If 
-				if (this.stack.length > distance && this.isEdge(current) && distance > 5) {
-					currentEnd.end = false
+				// If we are further from the start and we can place the end, move end pointer to current.
+				if (this.stack.length > distance && this.canPlaceEnd(current)) {
+					if (this.currentEnd) {
+						this.currentEnd.end = false
+					}
 					current.end = true;
-					currentEnd = current;
+					this.currentEnd = current
 				} 
+
+				// Pop the stack to get the next cell.
 				const nextCell = this.stack.pop();
 
 				// If we are at the end of the stack, break the loop.
