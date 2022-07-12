@@ -10,8 +10,7 @@ const MazeContent = (props: MazeProps) => {
     const { maze } = props;
     
     return (
-        // <div className={clsx('grid grid-container gap-0', 'grid-cols-'+maze.width, 'm-8 bg-amber-500 w-96 h-96 border-amber-800 border-4')}>
-        <div className="grid grid-cols-10 w-96 bg-amber-500 m-8 border-amber-800 border-4">
+        <div className={"bg-amber-500 mb-8 border-amber-800 border-4 grid grid-cols-"+maze.width}>
             { maze.data.map((item, i) => (
                <MazeCell item={item} />
             ))}

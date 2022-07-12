@@ -53,6 +53,19 @@ export class Maze {
 		this.generate();
 	}
 
+	isEdge(cell: Cell): boolean {
+		return (
+			// Cell is in first row.
+			cell.index <= this.width ||
+			// Cell is on left side.
+			cell.index % this.width === this.width - 1 || 
+			// Cell is on right side.
+			cell.index % this.width === 0 ||
+			// Cell is in last row.
+			cell.index > ((this.width * this.height) - this.width) && cell.index < (this.width * this.height)
+		);
+	}
+
 	/**
 	 *  Recursively generate maze via Randomized Depth-First Search using recursive backtracking.
 	 *  See https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_depth-first_search for more details.
@@ -60,6 +73,12 @@ export class Maze {
 	generate() {
 		// Set current to zero indexed cell.
 		let current: Cell = this.data[0];
+		// Set current to start.
+		current.start = true;
+		// Track furtest cell for end.
+		let distance: number = 0;
+		let currentEnd: Cell = current;
+		// Track number of visited cells.
 		let visited: number = 1;
 
 		// Do a bounded loop. Once we have visited all cells, we can exit safely.
@@ -88,7 +107,7 @@ export class Maze {
 
 			// Find our southern neighbor. If it exists and has not been visited, push into neighbors array.
 			const southIdx = current.index + this.width;
-			if (southIdx <= (this.width * this.height) - this.width && !this.data[southIdx].visited) {
+			if (southIdx <= (this.width * this.height) - 1 && !this.data[southIdx].visited) {
 				neighbors.push(this.data[southIdx]);
 			}
 
@@ -100,6 +119,12 @@ export class Maze {
 
 			// If neighbors is empty but we still have stack items, start to backtrack.
 			if (neighbors.length === 0) {
+				// If 
+				if (this.stack.length > distance && this.isEdge(current)) {
+					currentEnd.end = false
+					current.end = true;
+					currentEnd = current;
+				} 
 				const nextCell = this.stack.pop();
 				// If we are at the end of the stack, break the loop.
 				if (!nextCell) {
@@ -131,6 +156,7 @@ export class Maze {
 				}
 
 				// Push current cell onto stack and move current pointer to next.
+				distance = this.stack.length;
 				this.stack.push(current);
 				current = nextCell;
 			}
@@ -153,6 +179,8 @@ export class Cell {
 	index: number;
 	walls: number = Walls.All;
 	visited: boolean = false;
+	start: boolean = false;
+	end: boolean = false;
 
 	constructor(idx: number) {
 		this.index = idx;
