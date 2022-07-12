@@ -19,6 +19,7 @@ const MainContent = () => {
       return () => {
         active = false
       }
+    // eslint-disable-next-line
     }, []);
 
     function regenerate() {
