@@ -183,13 +183,14 @@ export class Maze {
 
 export class Cell {
 	index: number;
-	walls: number = Walls.All;
+	walls: number;
 	visited: boolean = false;
 	start: boolean = false;
 	end: boolean = false;
 
 	constructor(idx: number) {
 		this.index = idx;
+		this.walls = Walls.All;
 	}
 
 	/**
